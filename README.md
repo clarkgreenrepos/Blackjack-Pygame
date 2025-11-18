@@ -43,6 +43,9 @@ With all files open, type in:
 "python main.py"
 into a command prompt.
 
+If you're using Visual Studio Code, you can press the "play" button on the top right with all
+files open, and the game with automatically run.
+
 ## Controls
 
 - Hit — Draw a new card  
