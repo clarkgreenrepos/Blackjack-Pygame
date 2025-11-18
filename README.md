@@ -34,11 +34,14 @@ Blackjack/
 
 Install Pygame:
 
-pip install pygame
+In a command promp, type:
+"pip install pygame"
 
 ## How to Run
 
-python main.py
+With all files open, type in:
+"python main.py"
+into a command prompt.
 
 ## Controls
 
