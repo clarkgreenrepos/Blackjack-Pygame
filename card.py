@@ -12,7 +12,7 @@ class Card:
         self.num = num
         self.card_type = card_type
 
-        self.original_surface = pygame.image.load(join("Cards_new", self.img)).convert_alpha()
+        self.original_surface = pygame.image.load(join("card_sprites", self.img)).convert_alpha()
         self.card_surface = pygame.transform.scale(self.original_surface, (204.8, 281.6))
         self.card_rect = self.card_surface.get_frect(center=half_resolution)
 

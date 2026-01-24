@@ -12,7 +12,7 @@ class Deck:
     def load_shuffle(self):
         # Load cards from folder, assign values, and shuffle
         self.card_list.clear()
-        card_dir = "Cards_new"
+        card_dir = "card_sprites"
 
         for filename in os.listdir(card_dir):
             card_type = None

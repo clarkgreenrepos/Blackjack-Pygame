@@ -20,6 +20,7 @@ bust_font = pygame.font.SysFont("yugothicuisemibold", 80)
 TEXT_COL = (255, 255, 255)
 LOSE_COL = (255, 0, 43)
 WIN_COL = (0, 255, 47)
+PUSH_COL = (249, 255, 79)
 
 # Simple background (replace with table image if you have one)
 bg = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -34,8 +35,25 @@ def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     display_surface.blit(img, (x, y))
 
+def player_win(money):
+    draw_text("YOU WIN", outcome_font, WIN_COL, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - 20)
+    player_cash = money * 2
+    pygame.display.update()
+    pygame.time.wait(3000)
+    game_loop(player_cash)
+
+def player_lose(money):
+    draw_text("YOU LOSE", outcome_font, LOSE_COL, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - 20)
+    player_cash = money / 2
+    pygame.display.update()
+    pygame.time.wait(3000)
+    game_loop(int(player_cash))
+
 
 def game_loop(player_cash):
+    if player_cash < 1:
+        player_cash = 1
+    print(player_cash)
     # Main game loop for one round of Blackjack
     display_surface.blit(bg, (0, 0))
 
@@ -99,22 +117,29 @@ def game_loop(player_cash):
             # Stand logic
             if stand_button and event.type == pygame.MOUSEBUTTONUP:
                 while running:
-                    if house_hand.total > player_hand.total and house_hand.total <= 21:
-                        draw_text("YOU LOSE", outcome_font, LOSE_COL, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - 20)
-                        player_cash = player_cash / 2
-                        pygame.display.update()
-                        pygame.time.wait(3000)
-                        game_loop(int(player_cash))
-                        return
+                    if house_hand.total <= 21:
+                        if house_hand.total == player_hand.total:
+                            draw_text("PUSH", outcome_font, PUSH_COL, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - 20)
+                            pygame.display.update()
+                            pygame.time.wait(3000)
+                            game_loop(int(player_cash))
+                            return
+                        if house_hand.total > player_hand.total:
+                            player_lose(player_cash)
+                            return
+                        if house_hand.total >= 17:
+                            if house_hand.total < player_hand.total:
+                                if house_hand.total > player_hand.total:
+                                    player_lose(player_cash)
+                                    return
+                            else:
+                                player_win(player_cash)
+                                return
 
-                    if house_hand.total > 21:
-                        draw_text("YOU WIN", outcome_font, WIN_COL, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 - 20)
-                        player_cash = player_cash * 2
-                        pygame.display.update()
-                        pygame.time.wait(3000)
-                        game_loop(player_cash)
+                    else:
+                        player_win(player_cash)
                         return
-
+                    
                     house_hand.add_card(display_surface)
                     pygame.display.update()
                     pygame.time.wait(1000)
